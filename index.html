@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Primates NFT Viewer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Link to our CSS file for styling -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Main container for our app -->
+    <div class="container">
+        <!-- Header section -->
+        <div class="logo-container">
+            <img src="Logo.png" alt="Primates" class="logo">
+        </div>
+        <p>Enter a Solana wallet address to view your Primates NFTs</p>
+
+        <!-- Input section -->
+        <div class="input-section">
+            <label>Add up to 5 wallet addresses:</label>
+            <div class="wallet-inputs">
+                <input
+                    type="text"
+                    class="wallet-input"
+                    id="walletInput1"
+                    placeholder="Wallet address 1 (required)"
+                >
+                <input
+                    type="text"
+                    class="wallet-input"
+                    id="walletInput2"
+                    placeholder="Wallet address 2 (optional)"
+                >
+                <input
+                    type="text"
+                    class="wallet-input"
+                    id="walletInput3"
+                    placeholder="Wallet address 3 (optional)"
+                >
+                <input
+                    type="text"
+                    class="wallet-input"
+                    id="walletInput4"
+                    placeholder="Wallet address 4 (optional)"
+                >
+                <input
+                    type="text"
+                    class="wallet-input"
+                    id="walletInput5"
+                    placeholder="Wallet address 5 (optional)"
+                >
+            </div>
+            <!-- Button to trigger NFT fetching -->
+            <button id="fetchButton">View NFTs</button>
+        </div>
+
+        <!-- Sort Controls -->
+        <div id="sortSection" class="sort-section" style="display: none;">
+            <div class="section-header">
+                <h3>Sort NFTs</h3>
+                <button id="sortToggleBtn" class="toggle-btn">−</button>
+            </div>
+            <div id="sortContent" class="section-content">
+                <div class="sort-controls">
+                    <label for="sortSelect">Sort by:</label>
+                    <select id="sortSelect">
+                        <option value="default">Default Order</option>
+                        <option value="number">NFT Number</option>
+                        <option value="background" selected>Background Color</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter by Traits -->
+        <div id="filterSection" class="filter-section" style="display: none;">
+            <div class="section-header">
+                <h3>Filter by Traits</h3>
+                <button id="filterToggleBtn" class="toggle-btn">−</button>
+            </div>
+            <div id="filterContent" class="section-content">
+                <div id="filterControls" class="filter-controls"></div>
+                <button id="clearFiltersBtn" class="clear-filters-btn">Clear All Filters</button>
+            </div>
+        </div>
+
+        <!-- Quick actions -->
+        <div id="quickActions" class="quick-actions" style="display: none;">
+            <button id="selectAllBtn" class="select-all-btn">Select All</button>
+            <p class="drag-hint">💡 Tip: You can arrange your NFTs in the collage preview page!</p>
+        </div>
+
+        <!-- Loading message (hidden by default) -->
+        <div id="loading" class="loading" style="display: none;">
+            Loading NFTs... This may take a moment.
+        </div>
+
+        <!-- Error message (hidden by default) -->
+        <div id="error" class="error" style="display: none;"></div>
+
+        <!-- Selection controls -->
+        <div id="selectionControls" class="selection-controls" style="display: none;">
+            <div class="selection-info">
+                <span id="selectedCount">0 NFTs selected</span>
+            </div>
+            <button id="createCollageBtn" class="collage-btn" disabled>Create Collage</button>
+            <button id="clearSelectionBtn" class="clear-btn">Clear Selection</button>
+        </div>
+
+        <!-- Container where NFTs will be displayed -->
+        <div id="nftContainer" class="nft-container"></div>
+    </div>
+
+    <!-- Collage Preview Modal -->
+    <div id="previewModal" class="preview-modal" style="display: none;">
+        <div class="preview-content">
+            <div class="preview-header">
+                <h2>Arrange Collage - Drag to Reorder (Background images won't be downloaded)</h2>
+                <button id="closePreviewBtn" class="close-preview-btn">&times;</button>
+            </div>
+            <div class="layout-controls">
+                <label for="layoutSelect">Layout:</label>
+                <select id="layoutSelect">
+                    <option value="auto-square">Auto-Square</option>
+                    <option value="wide">Wide (more columns)</option>
+                    <option value="tall">Tall (more rows)</option>
+                    <option value="twitter-header">Twitter Header (3:1)</option>
+                    <option value="phone-wallpaper">Phone Wallpaper (9:19.5)</option>
+                    <option value="montage">Montage (Mixed Sizes)</option>
+                </select>
+                <div class="spacing-control">
+                    <label for="spacingSlider">Spacing: <span id="spacingValue">15</span>px</label>
+                    <input type="range" id="spacingSlider" min="0" max="30" value="15">
+                </div>
+            </div>
+            <div class="preview-body">
+                <div id="previewGrid" class="preview-grid"></div>
+            </div>
+            <div class="preview-footer">
+                <button id="downloadCollageBtn" class="download-btn">Download PNG</button>
+                <button id="cancelPreviewBtn" class="cancel-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- NFT Details Modal -->
+    <div id="nftDetailsModal" class="preview-modal" style="display: none;">
+        <div class="preview-content nft-details-content">
+            <div class="preview-header">
+                <h2 id="nftDetailsName">NFT Details</h2>
+                <button id="closeDetailsBtn" class="close-preview-btn">&times;</button>
+            </div>
+            <div class="preview-body nft-details-body">
+                <div class="nft-details-image">
+                    <img id="nftDetailsImage" src="" alt="NFT Image">
+                </div>
+                <div class="nft-details-info">
+                    <div class="nft-details-section">
+                        <h3>Description</h3>
+                        <p id="nftDetailsDescription"></p>
+                    </div>
+                    <div class="nft-details-section">
+                        <h3>Traits</h3>
+                        <div id="nftDetailsTraits" class="traits-grid"></div>
+                    </div>
+                    <div class="nft-details-section">
+                        <h3>Mint Address</h3>
+                        <p id="nftDetailsMint" class="mint-address"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Link to our JavaScript file -->
+    <script src="app.js"></script>
+</body>
+</html>

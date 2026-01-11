@@ -1,0 +1,63 @@
+========================================
+  HOW TO GET YOUR FREE API KEY
+========================================
+
+This takes only 2 MINUTES!
+
+STEP 1: Sign Up for Shyft
+--------------------------
+1. Open your browser
+2. Go to: https://shyft.to
+3. Click the "Sign Up" or "Get Started" button
+4. Sign up with:
+   - Email + password, OR
+   - Google account (easiest!)
+
+
+STEP 2: Get Your API Key
+--------------------------
+1. After signing in, you'll see your dashboard
+2. Look for "API Keys" in the menu (left side usually)
+3. Click on "API Keys"
+4. You'll see your API key - it looks like a random string:
+   Example: xM3k9Lp2QvR8wN5tY7...
+5. Click the "Copy" button to copy it
+
+
+STEP 3: Add API Key to Your App
+---------------------------------
+1. Open the file: app.js
+   - You can right-click it and choose "Open with Notepad"
+   - Or open it in Cursor
+
+2. Find line 45 (near the top of the file)
+   It says: const API_KEY = 'YOUR_API_KEY_HERE';
+
+3. Replace YOUR_API_KEY_HERE with your actual key
+   BEFORE: const API_KEY = 'YOUR_API_KEY_HERE';
+   AFTER:  const API_KEY = 'xM3k9Lp2QvR8wN5tY7...';
+
+   ⚠️ KEEP THE QUOTES! ⚠️
+
+4. Save the file (Ctrl+S or File > Save)
+
+
+STEP 4: Run Your App
+--------------------
+1. Double-click: start.bat
+2. Open browser, go to: http://localhost:3000
+3. Try it with this wallet:
+   7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU
+
+DONE! 🎉
+
+
+Need Help?
+----------
+If you see the error: "Please get a FREE API key"
+→ You haven't added your API key to app.js yet
+
+If you see: "Invalid API key"
+→ Make sure you copied the FULL key and kept the quotes
+
+Questions? The README.md file has more details!
